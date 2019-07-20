@@ -61,7 +61,7 @@ rownames(mat_input) <- input[,1]
     clabs = FALSE
 #end if
 
-pdf(file='$output1')
+pdf(file='$output1', paper='special', height=$height)
 colorscale
 
 #if $cluster_cond.cluster:
@@ -71,23 +71,27 @@ colorscale
         heatmap.2(linput, dendrogram="row", Colv=FALSE, Rowv=TRUE,
             distfun=dist_fun, hclustfun=hclust_fun, scale = '$scale', labRow = rlabs, labCol = clabs,
             col=colfunc(50), trace="none", density.info = "none", margins=c(8,8),
-            main = '$title', key.xlab='$key', keysize=1, cexCol=0.8, cexRow = 0.8, srtCol=45)
+            main = '$title', key.xlab='$key', keysize=1, cexCol=0.8, cexRow = $rowfontsize, srtCol=45,
+            lhei=c(1, $lineheight))
     #elif $cluster_cond.cluster_cols_rows=="columns":
         heatmap.2(linput, dendrogram="column", Colv=TRUE, Rowv=FALSE,
             distfun=dist_fun, hclustfun=hclust_fun, scale = '$scale', labRow = rlabs, labCol = clabs,
             col=colfunc(50), trace="none", density.info = "none", margins=c(8,8),
-            main = '$title', key.xlab='$key', keysize=1, cexCol=0.8, cexRow = 0.8, srtCol=45)
+            main = '$title', key.xlab='$key', keysize=1, cexCol=0.8, cexRow = $rowfontsize, srtCol=45,
+            lhei=c(1, $lineheight))
     #else
         heatmap.2(linput,
             distfun=dist_fun, hclustfun=hclust_fun, scale = '$scale', labRow = rlabs, labCol = clabs,
             col=colfunc(50), trace="none", density.info = "none", margins=c(8,8),
-            main = '$title', key.xlab='$key', keysize=1, cexCol=0.8, cexRow = 0.8, srtCol=45)
+            main = '$title', key.xlab='$key', keysize=1, cexCol=0.8, cexRow = $rowfontsize, srtCol=45,
+            lhei=c(1, $lineheight))
     #end if
 #else
     heatmap.2(linput,
         dendrogram="none", Colv=FALSE, Rowv=FALSE, scale = '$scale', labRow = rlabs, labCol = clabs,
         col=colfunc(50), trace="none", density.info = "none", margins=c(8,8),
-        main='$title', key.xlab='$key', keysize=1, cexCol=0.8, cexRow = 0.8, srtCol=45)
+        main='$title', key.xlab='$key', keysize=1, cexCol=0.8, cexRow = $rowfontsize, srtCol=45,
+        lhei=c(1, $lineheight))
 #end if
 
 dev.off()
@@ -143,6 +147,10 @@ dev.off()
             <option value="row">Scale my data by row</option>
             <option value="column">Scale my data by column</option>
         </param>
+
+        <param name="height" type="float" label="tweek map height" value="7" />
+        <param name="rowfontsize" type="float" label="tweek row label size" value="0.8" />
+        <param name="lineheight" type="integer" label="tweek line height" value="4" />
     </inputs>
     <outputs>
         <data name="output1" format="pdf"/>
@@ -151,12 +159,22 @@ dev.off()
         <test>
             <param name="input1" value="mtcars.txt"/>
             <param name="cluster" value="true"/>
-            <output name="output1" file="result1.pdf" compare="sim_size"/>
+            <output name="output1" file="result1.pdf"/>
         </test>
         <test>
             <param name="input1" value="mtcars.txt"/>
             <param name="cluster" value=""/>
-            <output name="output1" file="result2.pdf" compare="sim_size"/>
+            <output name="output1" file="result2.pdf"/>
+        </test>
+        <test>
+            <param name="input1" value="complex_table.tsv"/>
+            <param name="transform" value="log2plus1"/>
+            <param name="cluster" value=""/>
+            <param name="colorscheme" value="blwhre"/>
+            <param name="height" value="21"/>
+            <param name="rowfontsize" value="0.4"/>
+            <param name="lineheight" value="15"/>
+            <output name="output1" file="complex_result1.pdf"/>
         </test>
     </tests>
     <help><![CDATA[
