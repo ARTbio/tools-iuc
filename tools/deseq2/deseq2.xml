@@ -4,7 +4,7 @@
         <import>deseq2_macros.xml</import>
     </macros>
     <requirements>
-        <requirement type="package" version="1.22.1">bioconductor-deseq2</requirement>
+        <requirement type="package" version="1.28.2">bioconductor-deseq2</requirement>
         <!-- Optional dependency of tximport, needed to import kallisto results https://github.com/galaxyproject/usegalaxy-playbook/issues/161 -->
         <requirement type="package" version="2.26.2">bioconductor-rhdf5</requirement>
         <requirement type="package" version="1.10.0">bioconductor-tximport</requirement>
@@ -165,6 +165,11 @@ Rscript '${__tool_directory__}/deseq2.R'
             </when>
             <when value="count" />
         </conditional>
+        <param name="lfc" type="select" label="LFC shrinking method">
+        	<option value="apglm" selected="true" >apglm</option>
+        	<option value="normal">normal</option>
+        	<option value="ashr">ashr</option>
+        </param>
         <param name="pdf" type="boolean" truevalue="1" falsevalue="0" checked="true"
             label="Visualising the analysis results"
             help="output an additional PDF files" />
